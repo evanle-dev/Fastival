@@ -5,8 +5,6 @@ import sys
 
 import inquirer
 
-from api import settings
-
 RUN_SERVER = 'run server'
 UP_MIGRATION = 'up migration'
 UP_SEEDER = 'up seeder'
@@ -43,4 +41,6 @@ if answers['task'] == RUN_SERVER:
         sys.exit(0)
 
 elif answers['task'] == GET_VERSION:
+    from api import settings
+
     print('Current version is', settings.version)
