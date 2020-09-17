@@ -1,14 +1,20 @@
-import importlib
+import os
 
 from fastapi import FastAPI
-from fastapi_versioning import VersionedFastAPI
 
-__version__ = '0.1.0'
+from configurations.base import Settings
 
-app = FastAPI()
+current_env: str = os.getenv('ENV', 'local')
 
-version = __version__.split('.')
+if current_env == 'local':
+    from configurations.local import LocalSettings
 
-importlib.import_module('api.routes.v{0}_{1}'.format(version[1], version[2]))
+    settings: Settings = LocalSettings()
+elif current_env == 'production':
+    from configurations.production import ProductionSettings
 
-app = VersionedFastAPI(app)
+    settings: Settings = ProductionSettings()
+
+app = FastAPI(**settings.dict())
+
+from .routes import *

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$ENV" = "" ]; then
+if [ "$ENV" = "" ] || [ "$ENV" = "local" ]; then
   echo "You are running on local environment"
   uvicorn api:app --reload
 else
